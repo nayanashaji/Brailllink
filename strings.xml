@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Braillink</string>
+
+    <!-- Accessibility ser<resources>
+    <string name="app_name">Braillink</string>
+</resources>vice description (shown in Accessibility settings) -->
+    <string name="accessibility_service_description">
+        Braillink: with your permission this service can read visible on-screen text so the app can convert it to Braille patterns for connected hardware.
+    </string>
+</resources>
