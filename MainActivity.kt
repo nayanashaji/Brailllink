@@ -90,22 +90,28 @@ fun BraillinkControlScreen() {
                     // Start simulated capture -> send char by char
                     sendJob = scope.launch {
                         status = "Sending characters..."
-                        val textToSend = simulatedCapturedText
+                        // Get real captured text from the accessibility service
+                        val textToSend = ScreenTextAccessibilityService.getLatestText()
+                        if (textToSend.isBlank()) {
+                            appendLog("No accessible text found on screen. Try focusing the text or enable OCR fallback.")
+                            status = "Idle"
+                            sendJob = null
+                            return@launch
+                        }
+
                         appendLog("Captured text: \"$textToSend\"")
                         for (ch in textToSend) {
-                            // check cancellation
                             if (!isActive) break
                             val s = ch.toString()
-                            // "Send" the character: here we just log it and update lastSent.
                             appendLog("Sending: '$s'")
                             lastSent = s
-                            // Simulate the small transmission / actuator delay
                             delay(charDelayMs)
                         }
                         appendLog("Send finished")
                         status = "Idle"
                         sendJob = null
                     }
+
                 },
                 modifier = Modifier
                     .weight(1f)
